@@ -36,8 +36,8 @@ class App extends Component {
         <div className="score">
           Score = {this._getCurrentImageObjectScore()}
         </div>
-        <button className="button">-</button>  
-        <button className="button">+</button>
+        <button className="button" onClick={this._subtractPointFromImg}>-</button>  
+        <button className="button" onClick={this._addPointToImg}>+</button>
       </div>
     );
   }
@@ -51,6 +51,52 @@ class App extends Component {
 
   //   return returnArray;
   // }
+
+  _addPointToImg = () => {
+    const currentImg = this._getCurrentImageObject();
+    currentImg.score++;
+
+    const newArray = this.state.imgUrls.map(obj => {
+      if (obj.id !== currentImg.id) {
+        return obj;
+      } else {
+        return currentImg;
+      }
+    });
+    
+    this.setState({
+      imgUrls: newArray,
+    });
+  }
+
+  _subtractPointFromImg = () => {
+    const currentImg = this._getCurrentImageObject();
+    if (currentImg.score > 0) {
+      currentImg.score--;
+    }
+
+    const newArray = this.state.imgUrls.map(obj => {
+      if (obj.id !== currentImg.id) {
+        return obj;
+      } else {
+        return currentImg;
+      }
+    });
+    
+    this.setState({
+      imgUrls: newArray,
+    });
+  }
+
+  _getAllButCurrentImage = () => {
+    let subArray = [];
+    this.state.imgUrls.forEach(obj => {
+      if (obj.url !== this.state.currentImage) {
+        subArray.push(obj);
+      }
+    });
+    return subArray;
+  }
 
   _switchImageForward = () => {
     let newCurrentImage;
@@ -115,6 +161,14 @@ class App extends Component {
     });
 
     return imgObj.score;
+  }
+
+  _getCurrentImageObject = () => {
+    const imgObj = this.state.imgUrls.find((obj) => {
+      return obj.url === this.state.currentImage;
+    });
+
+    return imgObj;
   }
 
   _getImgUrls = () => {
