@@ -10,16 +10,16 @@ class App extends Component {
       imgUrls:[
         {id: 0,
         url: "https://d17fnq9dkz9hgj.cloudfront.net/uploads/2012/11/91615172-find-a-lump-on-cats-skin-632x475.jpg",
-        score: 0},
+        score: 80},
         {id: 1,
         url: "https://proxy.topixcdn.com/ipicimg/R0GN8TA70MQ8FF5N-cp0x237x1600x1038-fill810x415x",
-        score: 0},
+        score: 1000},
         {id: 2,
         url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSWeFeN5gO_iCKZSZv22FsI_GnSQNLqYZLZ9t5BP91X8Pm150M",
-        score: 0},
+        score: 17},
         {id: 3,
         url: "https://static1.comicvine.com/uploads/original/6/63459/5391391-8476188794-_8682.png",
-        score: 0},
+        score: 10},
       ],
       currentImage: "https://proxy.topixcdn.com/ipicimg/R0GN8TA70MQ8FF5N-cp0x237x1600x1038-fill810x415x",
     };
@@ -30,11 +30,11 @@ class App extends Component {
       <div className="App">
         <div className="gallery">
           <button className="button" onClick={this._switchImageBackward}>&lt;</button>
-          {this._convertImgUrlToImgElement(this._getCurrentImage())}
+          {this._convertImgUrlToImgElement(this._getCurrentImageUrl())}
           <button className="button" onClick={this._switchImageForward}>&gt;</button>
         </div>
         <div className="score">
-          score=5
+          Score = {this._getCurrentImageObjectScore()}
         </div>
         <button className="button">-</button>  
         <button className="button">+</button>
@@ -101,12 +101,20 @@ class App extends Component {
     );
   }
 
-  _getCurrentImage = () => {
+  _getCurrentImageUrl = () => {
     const imgUrls = this._getImgUrls();
     const returnThing = imgUrls.find(url => {
       return url === this.state.currentImage;
     });
     return returnThing;
+  }
+
+  _getCurrentImageObjectScore = () => {
+    const imgObj = this.state.imgUrls.find((obj) => {
+      return obj.url === this.state.currentImage;
+    });
+
+    return imgObj.score;
   }
 
   _getImgUrls = () => {
